@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { addToDb, getStoredCart } from "../../utilities/fakedb";
 import Cart from "../Cart/Cart";
 import Product from "../Product/Product";
 import "./Shop.css";
@@ -12,10 +13,20 @@ export default function Shop() {
       .then((products) => setProducts(products));
   }, []);
 
+  useEffect(() => {
+    let storedCart = getStoredCart();
+    for (const id in storedCart) {
+      const product = products.find((product) => product.id === id);
+      console.log(product);
+    }
+  }, [products]);
+
   const handleAddToCart = (product) => {
     console.log(product);
     const newCart = [...cart, product];
     setCart(newCart);
+    // add to localStorage
+    addToDb(product.id);
   };
 
   return (
