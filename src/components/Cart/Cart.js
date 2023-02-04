@@ -3,9 +3,11 @@ import "./Cart.css";
 export default function Cart({ cart }) {
   let totalPrice = 0;
   let totalShipping = 0;
+  let quantity = 0;
   for (const product of cart) {
-    totalPrice += product?.price;
-    totalShipping += product?.shipping;
+    totalPrice += product.price * product.quantity;
+    totalShipping += product.shipping;
+    quantity += product.quantity;
   }
   const tax = totalPrice * 0.1;
   const roundedTax = (Math.round(tax * 1000) / 1000).toFixed(2);
@@ -14,7 +16,7 @@ export default function Cart({ cart }) {
   return (
     <div className="cart">
       <h4>Order Summary:</h4>
-      <p>Selected Items: {cart.length} </p>
+      <p>Selected Items: {quantity} </p>
       <p>Total Price: ${totalPrice}</p>
       <p>Total Shipping: ${totalShipping}</p>
       <p>Tax: ${roundedTax}</p>

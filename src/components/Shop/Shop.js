@@ -14,16 +14,33 @@ export default function Shop() {
   }, []);
 
   useEffect(() => {
-    let storedCart = getStoredCart();
-    for (const id in storedCart) {
-      const product = products.find((product) => product.id === id);
-      console.log(product);
+    const storedCart = getStoredCart();
+    const storedCartLength = Object.keys(storedCart).length;
+    const savedCart = [];
+
+    if (products.length && storedCartLength) {
+      for (const id in storedCart) {
+        const addedProduct = products.find((product) => product.id === id);
+        if (addedProduct) {
+          addedProduct.quantity = storedCart[id];
+          savedCart.push(addedProduct);
+        }
+      }
+      setCart(savedCart);
     }
   }, [products]);
 
   const handleAddToCart = (product) => {
-    console.log(product);
-    const newCart = [...cart, product];
+    let newCart;
+    const productAlreadyInCart = cart.find(productInCart => productInCart.id === product.id);
+    if (productAlreadyInCart) {
+      productAlreadyInCart.quantity += 1;
+      const restProducts = cart.filter(productInCart => productInCart.id !== product.id);
+      newCart = [...restProducts, productAlreadyInCart];
+    } else {
+      product.quantity += 1;
+      newCart = [...cart, product];
+    }
     setCart(newCart);
     // add to localStorage
     addToDb(product.id);
