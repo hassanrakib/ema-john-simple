@@ -23,6 +23,9 @@
     left: 0;
     cursor: pointer;
 }
+.btn-text {
+    margin-right: 10px;
+}
 .btn-cart:hover {
     background-color: orange;
 }

@@ -19,7 +19,7 @@ export default function Product({ product, handleAddToCart }) {
         </p>
       </div>
       <button onClick={() => handleAddToCart(product)} className="btn-cart">
-        Add to Cart
+        <span className="btn-text">Add to Cart</span>
         <FontAwesomeIcon icon={faCartPlus} />
       </button>
     </div>
