@@ -1,0 +1,18 @@
+.review-item img {
+    height: 100px;
+}
+.review-item {
+    width: 400px;
+    border: 1px solid salmon;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+.review-details-container {
+    padding: 5px;
+    flex-grow: 1;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
