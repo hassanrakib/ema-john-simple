@@ -1,6 +1,6 @@
 import "./Cart.css";
 
-export default function Cart({ cart }) {
+export default function Cart({ cart, clearCart, children }) {
   let totalPrice = 0;
   let totalShipping = 0;
   let quantity = 0;
@@ -21,6 +21,10 @@ export default function Cart({ cart }) {
       <p>Total Shipping: ${totalShipping}</p>
       <p>Tax: ${roundedTax}</p>
       <h5>Grand Total: ${grandTotal}</h5>
+      <button onClick={clearCart}>Delete Cart</button>
+      <div>
+        {children}
+      </div>
     </div>
   );
 }

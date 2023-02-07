@@ -16,3 +16,14 @@
     display: flex;
     align-items: center;
 }
+.delete-container button {
+    background-color: brown;
+    color: white;
+    padding: 8px 20px;
+    border: 0;
+    border-radius: 25px;
+    cursor: pointer;
+}
+.delete-container button:hover {
+    background-color: red;
+}

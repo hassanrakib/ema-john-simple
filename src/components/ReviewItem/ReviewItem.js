@@ -1,6 +1,7 @@
 import "./ReviewItem.css";
-export default function ReviewItem({ product }) {
-    const { name, price, quantity, img } = product;
+export default function ReviewItem({ product, deleteOrderItem }) {
+    const { id, name, price, quantity, img } = product;
+
     return (
         <div className="review-item">
             <div>
@@ -13,7 +14,7 @@ export default function ReviewItem({ product }) {
                     <p><small>Quantity: ${quantity}</small></p>
                 </div>
                 <div className="delete-container">
-                    <button>Delete</button>
+                    <button onClick={() => deleteOrderItem(id)}>Delete</button>
                 </div>
             </div>
         </div>
