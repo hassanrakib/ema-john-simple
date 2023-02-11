@@ -7,44 +7,57 @@ import { productsAndCartLoaders } from "./loaders/productsAndCartLoaders";
 import Orders from "./components/Orders/Orders";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
-
+import Shipping from "./components/Shipping/Shipping";
+import PrivateRoute from "./routes/PrivateRoute";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Main />,
     children: [
       {
         index: true,
-        element: <Shop />
+        element: <Shop />,
       },
       {
-        path: 'shop',
-        element: <Shop />
+        path: "shop",
+        element: <Shop />,
       },
       {
-        path: 'about',
-        element: <About />
+        path: "about",
+        element: <About />,
       },
       {
-        path: 'inventory',
-        element: <Inventory />
+        path: "inventory",
+        element: (
+          <PrivateRoute>
+            <Inventory />
+          </PrivateRoute>
+        ),
       },
       {
-        path: 'orders',
+        path: "shipping",
+        element: (
+          <PrivateRoute>
+            <Shipping />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "orders",
         element: <Orders />,
         loader: productsAndCartLoaders,
       },
       {
-        path: 'login',
-        element: <Login />
+        path: "login",
+        element: <Login />,
       },
       {
-        path: 'signup',
-        element: <Signup />
-      }
-    ]
-  }
+        path: "signup",
+        element: <Signup />,
+      },
+    ],
+  },
 ]);
 
 function App() {
