@@ -11,6 +11,16 @@
     color:#FFFFFF;
     margin-left: 30px;
 }
+.header button {
+    background: coral;
+    border: 0;
+    margin-left: 30px;
+    padding: 10px 20px;
+    font-size: 19px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
 .header a:hover {
     color: yellow;
 }
