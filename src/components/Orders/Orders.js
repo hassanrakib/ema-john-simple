@@ -10,7 +10,7 @@ export default function Orders() {
   // initial cart is the saved cart
   const [cart, setCart] = useState(savedCart);
   const deleteOrderItem = (deleteItemId) => {
-    const restItems = cart.filter((product) => product.id !== deleteItemId);
+    const restItems = cart.filter((product) => product._id !== deleteItemId);
     removeFromDb(deleteItemId);
     setCart(restItems);
   };
@@ -24,7 +24,7 @@ export default function Orders() {
         {cart.map((product) => (
           <ReviewItem
             deleteOrderItem={deleteOrderItem}
-            key={product.id}
+            key={product._id}
             product={product}
           />
         ))}
