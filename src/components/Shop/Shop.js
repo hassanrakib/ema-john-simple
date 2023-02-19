@@ -1,3 +1,19 @@
+/******* 
+
+How to add Pagination?
+
+1. Get number of documents in a collection from backend and set it to a state.
+2. Get the current page index and set it to a state.
+3. Define documents per page in a state.
+4. Calculate the total number of pages by => numberOfDocuments / documentsPerPage
+5. Create pagination button using [...Array(pages).keys()].map(index => <button key={index} onClick={() => setCurrentPageIndex(index)}>{index + 1}</button>)
+6. Send the current page index and documents per page to backend using query parameters
+7. Then, cursor.skip(currentPageIndex * documentsPerPage).limit(documentsPerPage).toArray();
+7. Skip the number of documents by currentPageIndex * documentsPerPage and limit to documentsPerPage 
+8. fetch documents by ids using post method and set them to cart.
+
+*********/
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -23,7 +39,9 @@ export default function Shop() {
   const totalPages = Math.ceil(count / productsPerPage);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/products?page=${currentPageIndex}&size=${productsPerPage}`)
+    fetch(
+      `http://localhost:5000/products?page=${currentPageIndex}&size=${productsPerPage}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setProducts(data.result);
@@ -35,20 +53,31 @@ export default function Shop() {
 
   useEffect(() => {
     const storedCart = getStoredCart();
-    const storedCartLength = Object.keys(storedCart).length;
+    const storedCartKeys = Object.keys(storedCart);
+    const storedCartLength = storedCartKeys.length;
     const savedCart = [];
 
-    if (products.length && storedCartLength) {
-      for (const id in storedCart) {
-        const addedProduct = products.find((product) => product._id === id);
-        if (addedProduct) {
-          addedProduct.quantity = storedCart[id];
-          savedCart.push(addedProduct);
+    fetch("http://localhost:5000/productsByIds", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(storedCartKeys),
+    })
+      .then((res) => res.json())
+      .then((productsByIds) => {
+        if (productsByIds.length && storedCartLength) {
+          for (const id in storedCart) {
+            const addedProduct = productsByIds.find((product) => product._id === id);
+            if (addedProduct) {
+              addedProduct.quantity = storedCart[id];
+              savedCart.push(addedProduct);
+            }
+          }
+          setCart(savedCart);
         }
-      }
-      setCart(savedCart);
-    }
-  }, [products]);
+      });
+  }, []);
 
   const handleAddToCart = (product) => {
     let newCart;
@@ -96,19 +125,25 @@ export default function Shop() {
 
       {/* pagination */}
       <div className="pagination">
-        <p>Current Page Index: {currentPageIndex}, Products Per Page: {productsPerPage}</p>
+        <p>
+          Current Page Index: {currentPageIndex}, Products Per Page:{" "}
+          {productsPerPage}
+        </p>
         {[...Array(totalPages).keys()].map((index) => (
           <button
-          key={index} 
-          onClick={() => setCurrentPageIndex(index)}
-          className={currentPageIndex === index && "selected"}
+            key={index}
+            onClick={() => setCurrentPageIndex(index)}
+            className={currentPageIndex === index ? "selected" : undefined}
           >
             {index + 1}
           </button>
         ))}
 
         {/* select the number of products per page */}
-        <select value={productsPerPage} onChange={(e) => setProductsPerPage(e.target.value)}>
+        <select
+          value={productsPerPage}
+          onChange={(e) => setProductsPerPage(e.target.value)}
+        >
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
